@@ -14,16 +14,6 @@ function computerSelection() {
 }
 
 
-//Get Player selection via prompt
-function playerSelection(){  
-let choice = prompt('Rock, paper, scissors?').toLowerCase();
-if (choice == 'rock' || 'paper' || 'scissors'){
-  return choice
-} else {
-  playerSelection();
-}
-}
-
 //Play one round
 function playRound(playerSelection, computerSelection){
   if ((playerSelection == 'rock' && computerSelection == 'scissors')|| 
@@ -43,30 +33,45 @@ function playRound(playerSelection, computerSelection){
 }
 
 
-
-function game(){
-  while (wins < 5 && losses < 5) {
-    let playerChoice = playerSelection();
-    let computerChoice = computerSelection();
-      console.log(playRound(playerChoice, computerChoice));
-      updateScore();
-    }
-  }
-
-
+//Announces winner when someone wins five games
+let winner = document.querySelector('#winner');
   function updateScore(){
     if (wins == 5){
-      alert('You Win!')
+      winner.textContent += ' You, Congratulations!'
     } else if (losses == 5){
-      alert('You Lose!')
+      winner.textContent += ' CPU, You Suck!'
     } else {
       return
     }
   }
 
 
+//keeps track and displays scores
+function scoreDisplayUpdate(){
+  winsTotal.textContent = `Wins: ${wins}`;
+  lossesTotal.textContent = `Losses: ${losses}`;
+  drawsTotal.textContent = `Draws: ${draws}`
+}
 
-let wins = 0;
-let losses = 0;
-let draws = 0;
-game()
+
+//Add event listener to buttons and play around upon each player selection
+  const buttons = document.querySelectorAll('button');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', e => {
+      let playerSelection = e.target.textContent.toLowerCase();
+        console.log(playRound(playerSelection, computerSelection()))
+        scoreDisplayUpdate();
+        updateScore();
+    });
+  });
+
+ 
+let winsTotal = document.querySelector('#wins');
+let lossesTotal = document.querySelector('#losses');
+let drawsTotal = document.querySelector('#draws');
+
+
+ let wins = 0;
+ let losses = 0;
+ let draws = 0;
